@@ -28,6 +28,16 @@ export default function (Vue) {
 			}else{
 				return false;
 			}
+		},
+		setMenuDesplegar(resultado) {			
+			localStorage.setItem("menu", JSON.stringify(resultado));					
+		},
+		getMenuDesplegar() {
+			var menu = [];
+			if(this.getToken()){
+				var menu = localStorage.getItem('menu');
+			}			
+			return menu;
 		}
 	}
 

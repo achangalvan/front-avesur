@@ -28,12 +28,12 @@
 			test () {				
 				var data ={
 					client_id : 2,
-					client_secret: 'OP8Z8GneBgBhg5kq66ct6bZZ9z9bmkZyPPl9JEN2',
+					client_secret: 'MxR9wstIR3SWZg9fkPJSR9KDeDCOm4LtTATvJcBg',
 					grant_type: 'password',
 					username: this.email,
 					password: this.password
 				}
-				this.$http.post('http://192.168.0.20:8889/oauth/token',data).then(
+				this.$http.post('http://192.168.2.123:8889/oauth/token',data).then(
 					function(response){
 						//console.log(response);
 						this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now());
@@ -51,7 +51,6 @@
 	body {
 	  padding-top: 40px;
 	  padding-bottom: 40px;
-	  background-color: #eee;
 	}
 
 	.form-signin {

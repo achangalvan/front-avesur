@@ -35,8 +35,20 @@ Router.beforeEach(
 				next({
 					path: '/login'
 				})
-			}else{
-				next();
+			}else{				
+				Vue.http.get('http://192.168.2.123:8889/api/acces_component'+to.path).then(
+					function(response){							
+						if(response.body.acces == 1){							
+							Vue.auth.setMenuDesplegar(response.body.menu);
+							next();
+						}else{
+							alert("Sin acceso");
+						}									
+					},				
+					function(response){
+						alert("Ocurrio algun detalle");
+					}
+				);				
 			}			
 		} else{			
 			next();
