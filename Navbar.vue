@@ -19,43 +19,10 @@
 					<li class="nav-item" v-if="isAuth">               
 						<router-link to="Logout" class="nav-link">Cerrar sesión</router-link>
 					</li>
-					<b-nav-item-dropdown text="Opciones" right v-if="isAuth">
-						<b-dropdown-item :to="opciones.route" :key="opciones.id" v-for="opciones in menuDesplegar">{{opciones.route}}</b-dropdown-item>
-					</b-nav-item-dropdown>
-					<b-nav-item-dropdown text="Lang" right>
-						<b-dropdown-item-button>
-							<b-nav-item-dropdown class="dropdown-submenu" text="submenu 1">											
-								<b-dropdown-item href="#">EN</b-dropdown-item>
-								<b-dropdown-item href="#">ES</b-dropdown-item>
-								<b-dropdown-item href="#">RU</b-dropdown-item>
-								<b-dropdown-item href="#">
-									<b-nav-item-dropdown class="dropdown-submenu" text="submenu 2">
-										<b-dropdown-item href="#">EN</b-dropdown-item>
-										<b-dropdown-item href="#">ES</b-dropdown-item>
-										<b-dropdown-item href="#">
-											<b-nav-item-dropdown class="dropdown-submenu" text="submenu 3">
-												<b-dropdown-item href="#">EN</b-dropdown-item>
-												<b-dropdown-item href="#">ES</b-dropdown-item>
-												<b-dropdown-item href="#">RU</b-dropdown-item>
-												<b-dropdown-item href="#">FA</b-dropdown-item>
-											</b-nav-item-dropdown>
-										</b-dropdown-item>
-										<b-dropdown-item href="#">FA</b-dropdown-item>
-									</b-nav-item-dropdown>
-								</b-dropdown-item>
-							</b-nav-item-dropdown>
-						</b-dropdown-item-button>
-						<b-dropdown-item href="#">ES</b-dropdown-item>
-						<b-dropdown-item href="#">RU</b-dropdown-item>
-						<b-dropdown-item href="#">FA</b-dropdown-item>
-					</b-nav-item-dropdown>
-					<b-nav-item-dropdown text="Lang" right>
-						<b-dropdown-item href="#">EN</b-dropdown-item>
-						<b-dropdown-item href="#">ES</b-dropdown-item>
-						<b-dropdown-item href="#">RU</b-dropdown-item>
+					<b-nav-item-dropdown :text="datosmenu.name" v-for="datosmenu in menuDesplegar" v-if="isAuth && ! datosmenu.parent_id && datosmenu.sublevels">
 						<b-dropdown-item href="#">
 							<template>
-								<div v-html="htmlContent"></div>
+								<div v-html="traerHtml(datosmenu.id)"></div>
 							</template>
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
@@ -68,6 +35,47 @@
 		</nav>
 	</header>	
 </template>
+
+<script>
+	export default{
+		data(){
+			return{
+				isAuth : false,
+				menuDesplegar : []				
+			}       
+		},
+		watch:{
+			$route:function(){				
+				this.isAuth = this.$auth.isAuthenticated();
+				if(this.isAuth){
+					this.menuDesplegar = JSON.parse(this.$auth.getMenuDesplegar());
+				}
+				//console.log(this.$auth.getMenuDesplegar());
+			}
+		},
+		methods:{
+			traerHtml(menuId){
+				let _this = this
+				var optionsDrop = ``;		
+				this.menuDesplegar.forEach(function(element,index) {
+				    //console.log(element.parent_id);
+				    if(element.parent_id == menuId){
+				    	if(element.sublevels){
+				    		optionsDrop += `<li class='dropdown-submenu'>`;
+				    		optionsDrop += `<a class="dropdown-item" tabindex="-1" href="#">`+element.name+`</a>`;
+				    		optionsDrop += `<ul class='dropdown-menu'>`;
+				    		_this.traerHtml(element.id);
+				    		optionsDrop += `</ul>`;
+				    	}else{				    		
+				    		optionsDrop += `<li class="dropdown-item"><a href="` + element.route + `">` + element.name + `</a></li>`;
+				    	}
+				    }				    				          
+				});
+				return optionsDrop;
+			}
+		}
+	}
+</script>
 
 <style>
 
@@ -87,10 +95,6 @@
 
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
-}
-
-.dropdown-submenu > a {
-    color: #b2acac !important;
 }
 
 .dropdown-submenu>a:after {
@@ -123,47 +127,3 @@
     border-radius: 6px 0 6px 6px;
 }
 </style>
-<script>
-	export default{
-		data(){
-			return{
-				isAuth : false,
-				menuDesplegar : [],
-				htmlContent :
-				`
-					<li class="dropdown-submenu">
-						<a  class="dropdown-item" tabindex="-1" href="#">Submenu 1</a>
-						<ul class="dropdown-menu">
-							<li class="dropdown-item"><a tabindex="-1" href="#">Second level</a></li>
-							<li class="dropdown-submenu">
-								<a class="dropdown-item" href="#">Even More..</a>
-									<ul class="dropdown-menu">
-										<li class="dropdown-item"><a href="#">3rd level</a></li>
-										<li class="dropdown-submenu"><a class="dropdown-item" href="#">another level</a>
-											<ul class="dropdown-menu">
-												<li class="dropdown-item"><a href="#">4th level</a></li>
-												<li class="dropdown-item"><a href="#">4th level</a></li>
-												<li class="dropdown-item"><a href="#">4th level</a></li>
-											</ul>
-										</li>
-										<li class="dropdown-item"><a href="#">3rd level</a></li>
-									</ul>
-							</li>
-							<li class="dropdown-item"><a href="#">Second level</a></li>
-							<li class="dropdown-item"><a href="#">Second level</a></li>
-						</ul>
-					</li>
-				`
-			}       
-		},
-		watch:{
-			$route:function(){				
-				this.isAuth = this.$auth.isAuthenticated();
-				if(this.isAuth){
-					this.menuDesplegar = JSON.parse(this.$auth.getMenuDesplegar());
-				}
-				//console.log(this.$auth.getMenuDesplegar());
-			}
-		}
-	}
-</script>
