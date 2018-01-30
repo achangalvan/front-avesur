@@ -22,9 +22,10 @@
 					<b-nav-item-dropdown :text="datosmenu.name" v-for="datosmenu in menuDesplegar" v-if="isAuth && ! datosmenu.parent_id && datosmenu.sublevels">
 						<b-dropdown-item href="#">
 							<template>
-								<div v-html="traerHtml(datosmenu.id)"></div>
+								<div v-html="traerHtml(datosmenu.id,datosmenu.parent_id,menuDesplegar)"></div>
 							</template>
 						</b-dropdown-item>
+						<b-dropdown-item href="#" v-for="otherDatosmenu in menuDesplegar" v-if="otherDatosmenu.parent_id == datosmenu.id && ! otherDatosmenu.sublevels">{{otherDatosmenu.name}}</b-dropdown-item>
 					</b-nav-item-dropdown>
 				</ul>         
 				<form class="form-inline mt-2 mt-md-0">
@@ -41,7 +42,8 @@
 		data(){
 			return{
 				isAuth : false,
-				menuDesplegar : []				
+				menuDesplegar : [],
+				datos : ``				
 			}       
 		},
 		watch:{
@@ -49,29 +51,29 @@
 				this.isAuth = this.$auth.isAuthenticated();
 				if(this.isAuth){
 					this.menuDesplegar = JSON.parse(this.$auth.getMenuDesplegar());
-				}
-				//console.log(this.$auth.getMenuDesplegar());
+				}				
 			}
 		},
 		methods:{
-			traerHtml(menuId){
+			traerHtml(menuId,mainParent,menuDesplegar){
 				let _this = this
-				var optionsDrop = ``;		
-				this.menuDesplegar.forEach(function(element,index) {
-				    //console.log(element.parent_id);
+				var optionsDrop = ``;				
+				menuDesplegar.forEach(function(element,index){				    
 				    if(element.parent_id == menuId){
-				    	if(element.sublevels){
+				    	if(element.sublevels){				    		
 				    		optionsDrop += `<li class='dropdown-submenu'>`;
 				    		optionsDrop += `<a class="dropdown-item" tabindex="-1" href="#">`+element.name+`</a>`;
 				    		optionsDrop += `<ul class='dropdown-menu'>`;
-				    		_this.traerHtml(element.id);
-				    		optionsDrop += `</ul>`;
-				    	}else{				    		
-				    		optionsDrop += `<li class="dropdown-item"><a href="` + element.route + `">` + element.name + `</a></li>`;
+				    		optionsDrop += _this.traerHtml(element.id,1,menuDesplegar);
+				    		optionsDrop += `</ul>`;				    		
+				    	}else{
+				    		if(mainParent > 0){				    			
+				    			optionsDrop += `<li class="dropdown-item"><a href="Logout">` + element.name + `</a></li>`;				    			
+				    		}
 				    	}
 				    }				    				          
 				});
-				return optionsDrop;
+				return optionsDrop;							
 			}
 		}
 	}
