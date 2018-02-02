@@ -33,7 +33,7 @@
 					username: this.email,
 					password: this.password
 				}
-				this.$http.post('http://192.168.2.123:8889/oauth/token',data).then(
+				this.$http.post('oauth/token',data).then(
 					function(response){
 						//console.log(response);
 						this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now());

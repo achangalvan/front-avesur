@@ -11,10 +11,10 @@
 			}	    	
 		},		
 		created(){
-			this.$http.get('http://192.168.2.123:8889/api/test').then(
+			this.$http.get('api/test').then(
 				function(response){					
 					if(typeof response.body.hasacces !== 'undefined'){
-						alert(response.body.message);
+						//alert(response.body.message);
 						return false;
 					}else{
 						this.permiso = true;
