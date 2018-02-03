@@ -16,7 +16,7 @@ require('./assets/css/mystyle.css')
 
 Vue.use(VueResource)
 Vue.use(Auth)
-
+Vue.http.options.root = "http://192.168.2.121:8889";
 Router.beforeEach(
 	(to, from, next)=>{
 		if(Vue.auth.getToken() !== null){
@@ -36,7 +36,7 @@ Router.beforeEach(
 					path: '/login'
 				})
 			}else{				
-				Vue.http.get('http://192.168.2.123:8889/api/acces_component'+to.path).then(
+				Vue.http.get('api/acces_component'+to.path).then(
 					function(response){							
 						if(response.body.acces == 1){							
 							Vue.auth.setMenuDesplegar(response.body.menu);

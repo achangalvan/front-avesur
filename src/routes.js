@@ -5,6 +5,7 @@ import Register from './components/authentication/Register.vue'
 import Feed from './components/Feed.vue'
 import Index from './components/Index/Index.vue'
 import Logout from './components/authentication/Logout.vue'
+import ComprasBascula from './components/operacion/ComprasBascula.vue'
 
 
 Vue.use(VueRouter)
@@ -43,6 +44,13 @@ const router = new VueRouter({
 		{
 			path: "/Logout",
 			component: Logout,
+			meta:{
+				forAuth: true
+			}
+		},
+		{
+			path: "/compras-con-bascula",
+			component: ComprasBascula,
 			meta:{
 				forAuth: true
 			}

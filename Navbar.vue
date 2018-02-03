@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-			<a href="feed" class="navbar-brand">Carrousel</a>
+			<a href="#" class="navbar-brand">Carrousel</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 	          <span class="navbar-toggler-icon"></span>
 	        </button>
@@ -15,12 +15,17 @@
 						</li>
 					<li class="nav-item" v-if=" ! isAuth">               
 						<router-link to="Login" class="nav-link">Iniciar sesión</router-link>
-					</li>					
-					<b-nav-item-dropdown :text="datosmenu.name" v-for="datosmenu in menuDesplegar" v-if="isAuth && ! datosmenu.parent_id && datosmenu.sublevels" :key="datosmenu.id">						
+					</li>
+					<li class="nav-item" v-if="isAuth">               
+						<router-link to="Logout" class="nav-link">Cerrar sesión</router-link>
+					</li>
+					<b-nav-item-dropdown :text="datosmenu.name" v-for="datosmenu in menuDesplegar" v-if="isAuth && ! datosmenu.parent_id && datosmenu.sublevels">
+						<b-dropdown-item href="#">
 							<template>
-								<div v-html="traerHtml(datosmenu.id,datosmenu.parent_id,menuDesplegar)" v-if="datosmenu.sublevels"></div>
-							</template>				
-						<b-dropdown-item :to="otherDatosmenu.route" v-for="otherDatosmenu in menuDesplegar" v-if="otherDatosmenu.parent_id == datosmenu.id && ! otherDatosmenu.sublevels" :key="otherDatosmenu.id">{{otherDatosmenu.name}}</b-dropdown-item>
+								<div v-html="traerHtml(datosmenu.id,datosmenu.parent_id,menuDesplegar)"></div>
+							</template>
+						</b-dropdown-item>
+						<b-dropdown-item href="#" v-for="otherDatosmenu in menuDesplegar" v-if="otherDatosmenu.parent_id == datosmenu.id && ! otherDatosmenu.sublevels">{{otherDatosmenu.name}}</b-dropdown-item>
 					</b-nav-item-dropdown>
 				</ul>         
 				<form class="form-inline mt-2 mt-md-0">
@@ -63,7 +68,7 @@
 				    		optionsDrop += `</ul>`;				    		
 				    	}else{
 				    		if(mainParent > 0){				    			
-				    			optionsDrop += `<a class="dropdown-item" href="`+element.route+`">` + element.name + `</a>`;				    			
+				    			optionsDrop += `<li class="dropdown-item"><a href="Logout">` + element.name + `</a></li>`;				    			
 				    		}
 				    	}
 				    }				    				          
