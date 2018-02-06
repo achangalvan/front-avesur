@@ -6,6 +6,7 @@ import Feed from './components/Feed.vue'
 import Index from './components/Index/Index.vue'
 import Logout from './components/authentication/Logout.vue'
 import ComprasBascula from './components/operacion/ComprasBascula.vue'
+import Permissions from './components/system/Permissions.vue'
 
 
 Vue.use(VueRouter)
@@ -51,6 +52,13 @@ const router = new VueRouter({
 		{
 			path: "/compras-con-bascula",
 			component: ComprasBascula,
+			meta:{
+				forAuth: true
+			}
+		},
+		{
+			path: "/permisos",
+			component: Permissions,
 			meta:{
 				forAuth: true
 			}

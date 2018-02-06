@@ -10,13 +10,13 @@ Vue.use(BootstrapVue);
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-
 require('./assets/css/carousel.css')
 require('./assets/css/mystyle.css')
 
 Vue.use(VueResource)
 Vue.use(Auth)
-Vue.http.options.root = "http://192.168.2.121:8889";
+
+Vue.http.options.root = "http://192.168.0.20:8889";
 Router.beforeEach(
 	(to, from, next)=>{
 		if(Vue.auth.getToken() !== null){

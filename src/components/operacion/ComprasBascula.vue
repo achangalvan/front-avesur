@@ -19,20 +19,18 @@
 						<div class="form-group row">
 							<label for="proveedor" class="col-sm-2 col-form-label">Proveedor</label>
 							<div class="col-sm-10">
-								<select name="comprasCbascula_proveedor" id="comprasCbascula_proveedor" class="form-control" v-model="proveedor">
+								<select name="comprasCbascula_proveedor" id="comprasCbascula_proveedor" class="form-control" v-model="proveedor" @change="GetText">
 									<option value="0">Seleccione proveedor</option>
-									<option value="1">Proveedor 1</option>
-									<option value="2">Proveedor 2</option>
+									<option v-for="opcionesProv in proveedores" value="opcionesProv.id">{{opcionesProv.option}}</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="producto" class="col-sm-2 col-form-label">Producto</label>
 							<div class="col-sm-10">
-								<select name="comprasCbascula_producto" id="comprasCbascula_producto" class="form-control" v-model="producto">
+								<select name="comprasCbascula_producto" id="comprasCbascula_producto" class="form-control" v-model="producto" @change="GetText">
 									<option value="0">Seleccione producto</option>
-									<option value="1">Producto 1</option>
-									<option value="2">Producto 2</option>
+									<option v-for="opcionesProd in productos" value="opcionesProd.id">{{opcionesProd.option}}</option>
 								</select>
 							</div>
 						</div>
@@ -72,8 +70,8 @@
 								</thead>
 								<tbody>
 									<tr v-for="(items, index) in datos">									
-										<td>{{items.proveedor}}</td>
-										<td>{{items.producto}}</td>
+										<td>{{items.textProveedor}}</td>
+										<td>{{items.textProduct}}</td>
 										<td>{{items.pollosPorCaja}}</td>
 										<td>{{items.kgPorCaja}}</td>
 										<td>{{items.pollos}}</td>
@@ -101,12 +99,44 @@
 				producto : 0,
 				pollosPorCaja : 0,				
 				kgPorCaja : 0,
-				cajas  : 0,				
+				cajas  : 0,
+				textProveedor : '',
+				textProduct : '',
+				proveedores : [
+					{
+						id : 1,
+						option : "Proveedor 1"
+					},
+					{
+						id : 2,
+						option : "Proveedor 2"
+					},
+					{
+						id : 3,
+						option : "Proveedor 3"
+					}
+				],
+				productos : [
+					{
+						id : 1,
+						option : "Producto 1"
+					},
+					{
+						id : 2,
+						option : "Producto 2"
+					},
+					{
+						id : 3,
+						option : "Producto 3"
+					}
+				]
 			}
 		},
 		methods:{
 			agregar(){
 				this.datos.push({
+					textProveedor : this.textProveedor,
+					textProduct : this.textProduct,
 					proveedor : this.proveedor,
 					producto : this.producto,
 					pollosPorCaja : this.pollosPorCaja,
@@ -114,10 +144,18 @@
 					pollos : this.pollosPorCaja * this.cajas,
 					kg : this.kgPorCaja * this.cajas,
 					cajas  : this.cajas
-				});				
+				});
+				console.log(this.$refs);			
 			},
 			remove(index){				
 				this.datos.splice(index, 1);
+			},
+			GetText(e){				
+				if(e.target.id == "comprasCbascula_proveedor"){
+					this.textProveedor = e.target.options[e.target.options.selectedIndex].innerHTML
+				}else{
+					this.textProduct = e.target.options[e.target.options.selectedIndex].innerHTML
+				}
 			}
 		}
 	}

@@ -11,7 +11,7 @@
 		            <input type="checkbox" value="remember-me"> Remember me
 		          </label>
 		        </div>
-		        <button class="btn btn-lg btn-primary btn-block" type="button" @click="test">Sign in</button>              
+		        <button class="btn btn-lg btn-primary btn-block" type="button" @click="test" :disabled="deshabilitar">{{textButton}}</button>              
 	    	</form>
     </div> <!-- /container -->
 </template>
@@ -21,14 +21,18 @@
 		data(){
 			return{
 				email : "",
-				password : ""
+				password : "",
+				deshabilitar : false,
+				textButton : 'Sign in'
 			}	    	
 		},
 		methods: {
-			test () {				
+			test () {
+				this.deshabilitar = true;
+				this.textButton = 'Ingresando...';
 				var data ={
 					client_id : 2,
-					client_secret: 'MxR9wstIR3SWZg9fkPJSR9KDeDCOm4LtTATvJcBg',
+					client_secret: 'PkJKv6V4Q9opkUdFm9sP1oHNniSXLRaviILMQvYr',
 					grant_type: 'password',
 					username: this.email,
 					password: this.password
@@ -41,6 +45,8 @@
 					},
 					function(response){
 						alert("Ocurrio algun detalle");
+						this.deshabilitar = false;
+						this.textButton = 'Sign in';
 					}
 				)
 			}
