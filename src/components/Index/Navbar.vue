@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-			<a href="feed" class="navbar-brand">Avesur</a>
+			<a href="#" @click.stop="goTo" class="navbar-brand">Avesur</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 	          <span class="navbar-toggler-icon"></span>
 	        </button>
@@ -69,6 +69,9 @@
 				    }				    				          
 				});
 				return optionsDrop;							
+			},
+			goTo(){
+				this.$router.push("/feed");
 			}
 		}
 	}

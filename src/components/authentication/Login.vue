@@ -32,7 +32,7 @@
 				this.textButton = 'Ingresando...';
 				var data ={
 					client_id : 2,
-					client_secret: 'PkJKv6V4Q9opkUdFm9sP1oHNniSXLRaviILMQvYr',
+					client_secret: 'MxR9wstIR3SWZg9fkPJSR9KDeDCOm4LtTATvJcBg',
 					grant_type: 'password',
 					username: this.email,
 					password: this.password
